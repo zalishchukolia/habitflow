@@ -214,7 +214,7 @@ function SettingsPanel({ settings, onSave, onClose }) {
       )}
 
       <Row label="Показувати стрік" sub="Відображати стрік на карточках">
-        <Toggle on={local.showStreak} onToggle={()=>set("showStreak", !local.showStreak)} accent="#84cc16" />
+        <Toggle on={local.showStreak} onToggle={()=>set("showStreak", !local.showStreak)} accent="#f97316" />
       </Row>
 
       <div style={{ display:"flex", gap:10, marginTop:24 }}>
@@ -289,7 +289,7 @@ function HabitForm({ initial, onSave, onCancel }) {
 
       <div style={{ display:"flex", gap:10 }}>
         <button onClick={onCancel} style={b({ flex:1, padding:"12px 0", borderRadius:14, background:DARK.border, border:`1px solid ${DARK.border2}`, color:DARK.textMid, fontSize:13, fontWeight:700 })}>Скасувати</button>
-        <button onClick={submit}   style={b({ flex:1, padding:"12px 0", borderRadius:14, background:color.ring, color:"#0c0a09", fontSize:13, fontWeight:800 })}>{initial?"Зберегти":"Створити"}</button>
+        <button onClick={submit} style={b({ flex:1, padding:"12px 0", borderRadius:14, background:"#f97316", color:"#0c0a09", fontSize:13, fontWeight:800 })}>{initial?"Зберегти":"Створити"}</button>
       </div>
     </Modal>
   );
