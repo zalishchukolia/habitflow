@@ -567,6 +567,9 @@ export default function App() {
             <span style={{ color:DARK.textFaint, fontSize:12, marginLeft:8 }}>
               {new Date().toLocaleDateString("uk-UA",{weekday:"short",day:"numeric",month:"short"})}
             </span>
+            <span style={{ marginLeft:8, fontSize:11, background:"#3b82f6", color:"white", borderRadius:6, padding:"2px 8px", fontWeight:600 }}>
+              {import.meta.env.VITE_APP_STATUS}
+            </span>
           </div>
         </div>
 

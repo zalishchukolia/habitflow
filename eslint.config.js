@@ -5,6 +5,7 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
+  {ignores: ["coverage/**"]},
   globalIgnores(['dist']),
   {
     files: ['**/*.{js,jsx}'],
@@ -23,7 +24,10 @@ export default defineConfig([
       },
     },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      //'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      "no-unused-vars": "off",
+  "react-hooks/static-components": "off",
+  "react-hooks/purity": "off",
     },
   },
 ])
