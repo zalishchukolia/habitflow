@@ -1,5 +1,7 @@
 # HabitFlow — Щоденний трекер звичок
+[![CI/CD Pipeline](https://github.com/zalishchukolia/habitflow/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/zalishchukolia/habitflow/actions/workflows/ci-cd.yml)
 
+[Сайт](https://habitflow-theta-nine.vercel.app)
 ## Опис проєкту
 
 HabitFlow — це веб-застосунок для відстеження щоденних звичок. Додаток включає:
