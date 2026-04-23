@@ -44,8 +44,6 @@ npm install
 npm run dev
 ```
 
-Застосунок буде доступний на http://localhost:5173
-
 ## Структура проєкту
 ```
 habitflow/
