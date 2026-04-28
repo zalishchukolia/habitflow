@@ -6,6 +6,8 @@ build/
 *.log
 .DS_Store
 .vite/
+playwright-report/
+test-results/
 coverage/
 test-results/
 playwright-report/
