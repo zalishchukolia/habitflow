@@ -567,6 +567,7 @@ export default function App() {
             <span style={{ color:DARK.textFaint, fontSize:12, marginLeft:8 }}>
               {new Date().toLocaleDateString("uk-UA",{weekday:"short",day:"numeric",month:"short"})}
             </span>
+            
           </div>
         </div>
 
