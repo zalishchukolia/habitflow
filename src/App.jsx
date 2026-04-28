@@ -654,7 +654,7 @@ export default function App() {
                 <button key={v} onClick={()=>setFilter(v)} style={b({
                   padding:"8px 16px", borderRadius:11, fontSize:12, fontWeight:700,
                   background:filter===v?"#f97316":DARK.surface,
-                  border:`1px solid ${filter===v?"#f97316":DARK.border}`,
+                  border:`1px solid ${filter===v?"#f07014":DARK.border}`,
                   color:filter===v?"#0c0a09":DARK.textDim,
                 })}>{l}</button>
               ))}
