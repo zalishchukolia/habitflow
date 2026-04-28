@@ -72,3 +72,25 @@ describe('логіка фільтрації звичок', () => {
     expect(filtered[0].name).toBe('Читання')
   })
 })
+
+describe('додаткові тести calculateStreak', () => {
+  it('повертає 0 якщо completions порожній обʼєкт', () => {
+    expect(calculateStreak({})).toBe(0)
+  })
+
+  it('рахує стрік 5 днів поспіль', () => {
+    const completions = {
+      [formatDate(0)]: true,
+      [formatDate(1)]: true,
+      [formatDate(2)]: true,
+      [formatDate(3)]: true,
+      [formatDate(4)]: true,
+    }
+    expect(calculateStreak(completions)).toBe(5)
+  })
+
+  it('formatDate повертає рядок', () => {
+    expect(typeof formatDate(0)).toBe('string')
+  })
+})
+
