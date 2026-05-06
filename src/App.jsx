@@ -4,6 +4,7 @@ import {
   BarChart2, Home, Bell, Target, Leaf, ChevronLeft, ChevronRight,
   Activity, Calendar, Award, TrendingUp, Zap, X
 } from "lucide-react";
+import { usePostHog } from "@posthog/react";
 
 // ================================================================
 // 🐛 INTENTIONAL BUG:
@@ -509,6 +510,7 @@ export default function App() {
   const [toasts,       setToasts]       = useState([]);
   const [filter,       setFilter]       = useState("all");
   const nextId = useRef(Date.now());
+  const posthog = usePostHog();
 
   useEffect(()=>{ localStorage.setItem("hf4_habits",   JSON.stringify(habits));   }, [habits]);
   useEffect(()=>{ localStorage.setItem("hf4_settings", JSON.stringify(settings)); }, [settings]);
@@ -519,10 +521,40 @@ export default function App() {
     setTimeout(()=>setToasts(p=>p.filter(t=>t.id!==id)), 3000);
   };
 
-  const handleAdd    = f => { setHabits(p=>[{...f,id:++nextId.current,completions:{},createdAt:Date.now()},...p]); setShowForm(false); toast("Нову звичку додано!"); };
-  const handleEdit   = f => { setHabits(p=>p.map(h=>h.id===editHabit.id?{...h,...f}:h)); setEditHabit(null); toast("Збережено","info"); };
-  const handleDelete = () => { setHabits(p=>p.filter(h=>h.id!==confirmHabit.id)); setConfirmHabit(null); toast("Видалено","error"); };
+  const handleAdd = f => {
+    setHabits(p=>[{...f,id:++nextId.current,completions:{},createdAt:Date.now()},...p]);
+    setShowForm(false);
+    toast("Нову звичку додано!");
+    posthog?.capture('habit_created', { habit_name: f.name, icon_id: f.iconId, color_name: f.color.name });
+  };
+  const handleEdit = f => {
+    setHabits(p=>p.map(h=>h.id===editHabit.id?{...h,...f}:h));
+    setEditHabit(null);
+    toast("Збережено","info");
+    posthog?.capture('habit_edited', { habit_name: f.name, icon_id: f.iconId, color_name: f.color.name });
+  };
+  const handleDelete = () => {
+    posthog?.capture('habit_deleted', { habit_name: confirmHabit.name });
+    setHabits(p=>p.filter(h=>h.id!==confirmHabit.id));
+    setConfirmHabit(null);
+    toast("Видалено","error");
+  };
   const handleToggle = (hId, day) => {
+    const habit = habits.find(h => h.id === hId);
+    const wasCompleted = !!habit?.completions[day];
+    const isToday = day === TODAY;
+    if (wasCompleted) {
+      posthog?.capture('habit_uncompleted', { habit_name: habit?.name, day, is_today: isToday });
+    } else {
+      posthog?.capture('habit_completed', { habit_name: habit?.name, day, is_today: isToday });
+      if (isToday) {
+        const prevDoneCount = habits.filter(h => !!h.completions[TODAY]).length;
+        const newDoneCount = prevDoneCount + 1;
+        if (prevDoneCount < settings.dailyGoal && newDoneCount >= settings.dailyGoal) {
+          posthog?.capture('daily_goal_reached', { goal: settings.dailyGoal, habits_completed: newDoneCount });
+        }
+      }
+    }
     setHabits(p=>p.map(h=>{
       if(h.id!==hId) return h;
       const c={...h.completions};
@@ -581,7 +613,7 @@ export default function App() {
           })}>
             <Home size={14}/> Головна
           </button>
-          <button onClick={()=>setPage("stats")} style={b({
+          <button onClick={()=>{ setPage("stats"); posthog?.capture('stats_viewed', { habit_count: habits.length }); }} style={b({
             padding:"7px 14px", borderRadius:10, fontSize:12, fontWeight:700,
             display:"flex", alignItems:"center", gap:6,
             background:page==="stats"?"#f97316":"transparent",
@@ -651,7 +683,7 @@ export default function App() {
             {/* Filters */}
             <div style={{ display:"flex", gap:6, marginBottom:20, flexWrap:"wrap" }}>
               {[["all","Всі"],["pending","Залишилось"],["done","Виконані"],["streak","Стрік 2+"]].map(([v,l])=>(
-                <button key={v} onClick={()=>setFilter(v)} style={b({
+                <button key={v} onClick={()=>{ setFilter(v); posthog?.capture('filter_changed', { filter: v }); }} style={b({
                   padding:"8px 16px", borderRadius:11, fontSize:12, fontWeight:700,
                   background:filter===v?"#f97316":DARK.surface,
                   border:`1px solid ${filter===v?"#f07014":DARK.border}`,
@@ -698,7 +730,7 @@ export default function App() {
 
       {showForm     && <HabitForm onSave={handleAdd}  onCancel={()=>setShowForm(false)} />}
       {editHabit    && <HabitForm initial={editHabit} onSave={handleEdit} onCancel={()=>setEditHabit(null)} />}
-      {showSettings && <SettingsPanel settings={settings} onSave={s=>{ setSettings(s); toast("Налаштування збережено","info"); }} onClose={()=>setShowSettings(false)} />}
+      {showSettings && <SettingsPanel settings={settings} onSave={s=>{ setSettings(s); toast("Налаштування збережено","info"); posthog?.capture('settings_saved', { daily_goal: s.dailyGoal, reminder_enabled: s.reminderEnabled, show_streak: s.showStreak }); }} onClose={()=>setShowSettings(false)} />}
       <ConfirmModal open={!!confirmHabit} name={confirmHabit?.name} onConfirm={handleDelete} onCancel={()=>setConfirmHabit(null)} />
       <Toast toasts={toasts} remove={id=>setToasts(p=>p.filter(t=>t.id!==id))} />
     </div>
