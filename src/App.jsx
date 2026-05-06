@@ -175,6 +175,7 @@ function SettingsPanel({ settings, onSave, onClose }) {
   const [local, setLocal] = useState({ ...settings });
   const set = (k, v) => setLocal(p => ({ ...p, [k]: v }));
 
+
   const Row = ({ label, sub, children }) => (
     <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"14px 0", borderBottom:`1px solid ${DARK.border}` }}>
       <div>
@@ -184,6 +185,7 @@ function SettingsPanel({ settings, onSave, onClose }) {
       {children}
     </div>
   );
+
 
   const Toggle = ({ on, onToggle, accent="#f97316" }) => (
     <button onClick={onToggle} style={b({
@@ -197,6 +199,7 @@ function SettingsPanel({ settings, onSave, onClose }) {
     </button>
   );
 
+
   return (
     <Modal maxWidth={420}>
       <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:20 }}>
@@ -209,6 +212,7 @@ function SettingsPanel({ settings, onSave, onClose }) {
         </div>
       </div>
 
+
       <Row label="Ціль на день" sub="Скільки звичок виконати">
         <div style={{ display:"flex", alignItems:"center", gap:8 }}>
           <button onClick={()=>set("dailyGoal", Math.max(1, local.dailyGoal-1))} style={b({ width:30, height:30, borderRadius:8, background:DARK.border, border:`1px solid ${DARK.border2}`, color:DARK.text, fontSize:16, display:"flex", alignItems:"center", justifyContent:"center" })}>−</button>
@@ -217,9 +221,11 @@ function SettingsPanel({ settings, onSave, onClose }) {
         </div>
       </Row>
 
+
       <Row label="Нагадування" sub="Щоденне нагадування">
         <Toggle on={local.reminderEnabled} onToggle={()=>set("reminderEnabled", !local.reminderEnabled)} />
       </Row>
+
 
       {local.reminderEnabled && (
         <Row label="Час нагадування" sub="Коли нагадувати щодня">
@@ -231,9 +237,11 @@ function SettingsPanel({ settings, onSave, onClose }) {
         </Row>
       )}
 
+
       <Row label="Показувати стрік" sub="Відображати стрік на карточках">
         <Toggle on={local.showStreak} onToggle={()=>set("showStreak", !local.showStreak)} accent="#f97316" />
       </Row>
+
 
       <div style={{ display:"flex", gap:10, marginTop:24 }}>
         <button onClick={onClose} style={b({ flex:1, padding:"12px 0", borderRadius:14, background:DARK.border, border:`1px solid ${DARK.border2}`, color:DARK.textMid, fontSize:13, fontWeight:700 })}>Скасувати</button>
@@ -251,11 +259,13 @@ function HabitForm({ initial, onSave, onCancel }) {
   const [color,   setColor] = useState(initial?.color   || COLORS[0]);
   const [err,     setErr]   = useState("");
 
+
   const submit = () => {
     if (!name.trim())          { setErr("Назва обов'язкова"); return; }
     if (name.trim().length>50) { setErr("Максимум 50 символів"); return; }
     onSave({ name:name.trim(), iconId, color });
   };
+
 
   return (
     <Modal>
@@ -266,6 +276,7 @@ function HabitForm({ initial, onSave, onCancel }) {
         <h2 style={{ color:DARK.text, fontWeight:900, fontSize:18 }}>{initial?"Редагувати звичку":"Нова звичка"}</h2>
       </div>
 
+
       <div style={{ marginBottom:18 }}>
         <label style={{ color:DARK.textMid, fontSize:11, textTransform:"uppercase", letterSpacing:"0.1em", display:"block", marginBottom:8 }}>Назва *</label>
         <input
@@ -275,6 +286,7 @@ function HabitForm({ initial, onSave, onCancel }) {
         />
         {err && <p style={{ color:"#f87171", fontSize:12, marginTop:5 }}>{err}</p>}
       </div>
+
 
       <div style={{ marginBottom:18 }}>
         <label style={{ color:DARK.textMid, fontSize:11, textTransform:"uppercase", letterSpacing:"0.1em", display:"block", marginBottom:10 }}>Іконка</label>
@@ -293,6 +305,7 @@ function HabitForm({ initial, onSave, onCancel }) {
         </div>
       </div>
 
+
       <div style={{ marginBottom:26 }}>
         <label style={{ color:DARK.textMid, fontSize:11, textTransform:"uppercase", letterSpacing:"0.1em", display:"block", marginBottom:10 }}>Колір</label>
         <div style={{ display:"flex", gap:9, flexWrap:"wrap" }}>
@@ -305,6 +318,7 @@ function HabitForm({ initial, onSave, onCancel }) {
           ))}
         </div>
       </div>
+
 
       <div style={{ display:"flex", gap:10 }}>
         <button onClick={onCancel} style={b({ flex:1, padding:"12px 0", borderRadius:14, background:DARK.border, border:`1px solid ${DARK.border2}`, color:DARK.textMid, fontSize:13, fontWeight:700 })}>Скасувати</button>
@@ -324,6 +338,7 @@ function MonthStats({ habits }) {
   const todayDay    = now.getDate();
   const monthLabel  = now.toLocaleDateString("uk-UA", { month:"long", year:"numeric" });
 
+
   const dailyCounts = Array.from({ length:daysInMonth }, (_, i) => {
     const day = i + 1;
     return habits.reduce((sum, h) =>
@@ -333,11 +348,13 @@ function MonthStats({ habits }) {
       }).length, 0);
   });
 
+
   const maxVal     = Math.max(...dailyCounts, 1);
   const total      = dailyCounts.reduce((a,b)=>a+b,0);
   const activeDays = dailyCounts.filter(c=>c>0).length;
   const bestStreak = habits.reduce((max,h)=>Math.max(max,calculateStreak(h.completions)),0);
   const totalAll   = habits.reduce((sum,h)=>sum+Object.keys(h.completions).length,0);
+
 
   const statCards = [
     { label:"Цього місяця",     val:total,       unit:"виконань",            Icon:Calendar   },
@@ -347,6 +364,7 @@ function MonthStats({ habits }) {
     { label:"Середнє/день",     val:activeDays?Math.round(total/activeDays*10)/10:0, unit:"цього місяця", Icon:TrendingUp },
     { label:"Відслідковується", val:habits.length, unit:"звичок",            Icon:Activity   },
   ];
+
 
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:16 }}>
@@ -361,6 +379,8 @@ function MonthStats({ habits }) {
         ))}
       </div>
 
+
+      {/* Bar chart */}
       <div style={{ background:DARK.surface, border:`1px solid ${DARK.border}`, borderRadius:20, padding:"20px" }}>
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:16 }}>
           <div>
@@ -369,6 +389,7 @@ function MonthStats({ habits }) {
           </div>
           <BarChart2 size={18} color={DARK.textDim} />
         </div>
+
 
         <div style={{ display:"flex", alignItems:"flex-end", gap:3, height:80 }}>
           {dailyCounts.map((c, i) => {
@@ -392,6 +413,8 @@ function MonthStats({ habits }) {
         </div>
       </div>
 
+
+      {/* Per-habit */}
       <div style={{ background:DARK.surface, border:`1px solid ${DARK.border}`, borderRadius:20, padding:"20px" }}>
         <p style={{ color:DARK.text, fontWeight:800, fontSize:15, marginBottom:16 }}>По звичках</p>
         {habits.length===0 && <p style={{ color:DARK.textDim, fontSize:13 }}>Додай звички щоб побачити статистику</p>}
@@ -463,6 +486,7 @@ function HabitCard({ habit, settings, onToggle, onEdit, onDelete }) {
   const todayDone= !!habit.completions[TODAY];
   const total    = Object.keys(habit.completions).length;
 
+
   return (
     <div style={{
       background:DARK.surface, borderRadius:20, padding:"18px 20px",
@@ -488,6 +512,7 @@ function HabitCard({ habit, settings, onToggle, onEdit, onDelete }) {
           </div>
         </div>
 
+
         <div style={{ display:"flex", gap:5, flexShrink:0 }}>
           <button onClick={()=>onToggle(TODAY)} style={b({
             padding:"7px 14px", borderRadius:10, fontSize:12, fontWeight:700,
@@ -509,6 +534,7 @@ function HabitCard({ habit, settings, onToggle, onEdit, onDelete }) {
         </div>
       </div>
 
+
       <WeekGrid completions={habit.completions} color={habit.color} onToggle={onToggle} />
     </div>
   );
@@ -519,10 +545,11 @@ function HabitCard({ habit, settings, onToggle, onEdit, onDelete }) {
 export default function App() {
   const load = (k, fb) => { try { return JSON.parse(localStorage.getItem(k)) || fb; } catch { return fb; } };
 
+
   const [habits,       setHabits]       = useState(()=>load("hf4_habits",   INITIAL_HABITS));
   const [settings,     setSettings]     = useState(()=>load("hf4_settings", INITIAL_SETTINGS));
   const [page,         setPage]         = useState("home");
-  const [isDark,       setIsDark]       = useState(true);
+  const [isDark,       setIsDark]       = useState(true);   // 🐛 BUG: toggled but never used in styles
   const [showForm,     setShowForm]     = useState(false);
   const [editHabit,    setEditHabit]    = useState(null);
   const [confirmHabit, setConfirmHabit] = useState(null);
@@ -532,6 +559,7 @@ export default function App() {
   const nextId = useRef(Date.now());
   const posthog = usePostHog();
 
+
   useEffect(() => {
     Sentry.setUser({
       id: "user-001",
@@ -540,22 +568,17 @@ export default function App() {
     });
   }, []);
 
-  const throwError = () => {
-    Sentry.addBreadcrumb({
-      message: "Break the world button clicked",
-      category: "user",
-    });
-    throw new Error("Sentry Test Error: Something went wrong!");
-  };
 
   useEffect(()=>{ localStorage.setItem("hf4_habits",   JSON.stringify(habits));   }, [habits]);
   useEffect(()=>{ localStorage.setItem("hf4_settings", JSON.stringify(settings)); }, [settings]);
+
 
   const toast = (msg, type="success") => {
     const id = Date.now();
     setToasts(p=>[...p,{id,msg,type}]);
     setTimeout(()=>setToasts(p=>p.filter(t=>t.id!==id)), 3000);
   };
+
 
   const handleAdd = f => {
     setHabits(p=>[{...f,id:++nextId.current,completions:{},createdAt:Date.now()},...p]);
@@ -599,9 +622,11 @@ export default function App() {
     }));
   };
 
+
   const doneToday = habits.filter(h=>h.completions[TODAY]).length;
   const goalMet   = doneToday >= settings.dailyGoal;
   const progress  = habits.length ? Math.round((doneToday/habits.length)*100) : 0;
+
 
   const filtered = habits.filter(h=>{
     if(filter==="pending" && !!h.completions[TODAY]) return false;
@@ -610,7 +635,9 @@ export default function App() {
     return true;
   });
 
+
   return (
+    // 🐛 BUG: background always uses DARK.bg regardless of isDark state
     <div style={{ minHeight:"100vh", background:DARK.bg, fontFamily:"'Nunito',sans-serif", color:DARK.text }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap');
@@ -623,6 +650,8 @@ export default function App() {
         ::-webkit-scrollbar-thumb{background:${DARK.border2};border-radius:99px}
       `}</style>
 
+
+      {/* Header */}
       <header style={{ borderBottom:`1px solid ${DARK.surface}`, padding:"14px 20px", display:"flex", alignItems:"center", justifyContent:"space-between", position:"sticky", top:0, background:"rgba(12,10,9,0.92)", backdropFilter:"blur(16px)", zIndex:30 }}>
         <div style={{ display:"flex", alignItems:"center", gap:10 }}>
           <div style={{ width:34, height:34, borderRadius:10, background:"linear-gradient(135deg,#f97316,#ea580c)", display:"flex", alignItems:"center", justifyContent:"center" }}>
@@ -635,6 +664,7 @@ export default function App() {
             </span>
           </div>
         </div>
+
 
         <div style={{ display:"flex", gap:6, alignItems:"center" }}>
           <button onClick={()=>setPage("home")} style={b({
@@ -656,23 +686,22 @@ export default function App() {
             <BarChart2 size={14}/> Статистика
           </button>
 
-          <button
-            onClick={()=>{
-              setIsDark(p=>!p);
-              Sentry.addBreadcrumb({ message: "Theme toggle clicked", category: "user" });
-              throw new Error("Sentry Test Error: Theme switch is broken!");
-            }}
-            title="Змінити тему"
-            style={b({
-              padding:"7px 10px", borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center",
-              background: isDark?"transparent":"rgba(255,255,255,0.08)",
-              border:`1px solid ${isDark?DARK.border:"rgba(255,255,255,0.2)"}`,
-              color: isDark?DARK.textDim:"#fcd34d",
-              transition:"all .2s",
-            })}
-          >
+
+          {/* Updated theme button with Sentry.captureException */}
+          <button onClick={()=>{
+            setIsDark(p=>!p);
+            Sentry.addBreadcrumb({ message: "Theme toggle clicked", category: "user" });
+            Sentry.captureException(new Error("Sentry Test Error: Theme switch is broken!"));
+          }} title="Змінити тему" style={b({
+            padding:"7px 10px", borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center",
+            background: isDark?"transparent":"rgba(255,255,255,0.08)",
+            border:`1px solid ${isDark?DARK.border:"rgba(255,255,255,0.2)"}`,
+            color: isDark?DARK.textDim:"#fcd34d",
+            transition:"all .2s",
+          })}>
             {isDark ? <Sun size={16}/> : <Moon size={16}/>}
           </button>
+
 
           <button onClick={()=>setShowSettings(true)} style={b({ padding:"7px 10px", borderRadius:10, display:"flex", alignItems:"center", justifyContent:"center", background:"transparent", border:`1px solid ${DARK.border}`, color:DARK.textDim })}>
             <Settings size={16}/>
@@ -687,9 +716,14 @@ export default function App() {
         </div>
       </header>
 
+
       <main style={{ maxWidth:700, margin:"0 auto", padding:"28px 16px" }}>
+
+
+        {/* ── HOME ──────────────────────────────────────── */}
         {page==="home" && (
           <>
+            {/* Today card */}
             <div style={{ background:goalMet?"rgba(132,204,22,0.07)":DARK.surface, border:`1px solid ${goalMet?"#84cc1640":DARK.border}`, borderRadius:22, padding:"22px", marginBottom:24 }}>
               <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:14 }}>
                 <div>
@@ -717,6 +751,8 @@ export default function App() {
               <p style={{ color:DARK.textFaint, fontSize:11, marginTop:8, textAlign:"right" }}>{progress}% виконано</p>
             </div>
 
+
+            {/* Filters */}
             <div style={{ display:"flex", gap:6, marginBottom:20, flexWrap:"wrap" }}>
               {[["all","Всі"],["pending","Залишилось"],["done","Виконані"],["streak","Стрік 2+"]].map(([v,l])=>(
                 <button key={v} onClick={()=>{ setFilter(v); posthog?.capture('filter_changed', { filter: v }); }} style={b({
@@ -727,6 +763,7 @@ export default function App() {
                 })}>{l}</button>
               ))}
             </div>
+
 
             {filtered.length===0 ? (
               <div style={{ textAlign:"center", padding:"64px 0" }}>
@@ -757,12 +794,15 @@ export default function App() {
           </>
         )}
 
+
         {page==="stats" && <MonthStats habits={habits} />}
+
 
         <p style={{ textAlign:"center", color:DARK.textFaint, fontSize:11, marginTop:40, fontWeight:600 }}>
           HabitFlow · {habits.reduce((s,h)=>s+Object.keys(h.completions).length,0)} виконань всього
         </p>
       </main>
+
 
       {showForm     && <HabitForm onSave={handleAdd}  onCancel={()=>setShowForm(false)} />}
       {editHabit    && <HabitForm initial={editHabit} onSave={handleEdit} onCancel={()=>setEditHabit(null)} />}
