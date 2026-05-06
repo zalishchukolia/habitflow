@@ -7,8 +7,7 @@ import posthog from 'posthog-js'
 import { PostHogProvider } from '@posthog/react'
 
 posthog.init('phc_vsj2aobx6g5hdqhy5J9DbHiBV28G96dzQir7cn4qqBHj', {
-  api_host: '/ingest',
-  ui_host: 'https://us.posthog.com',
+  api_host: 'https://us.i.posthog.com',
   person_profiles: 'identified_only',
 })
 
