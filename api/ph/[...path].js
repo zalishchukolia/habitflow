@@ -11,7 +11,7 @@ export default async function handler(req) {
   const headers = new Headers()
   headers.set('host', host)
   headers.set('content-type', req.headers.get('content-type') || 'application/json')
-  
+
   const xff = req.headers.get('x-forwarded-for')
   if (xff) headers.set('x-forwarded-for', xff)
 
@@ -24,8 +24,12 @@ export default async function handler(req) {
     redirect: 'follow',
   })
 
+  const responseHeaders = new Headers(response.headers)
+  responseHeaders.delete('content-encoding')
+  responseHeaders.delete('transfer-encoding')
+
   return new Response(response.body, {
     status: response.status,
-    headers: response.headers,
+    headers: responseHeaders,
   })
 }
