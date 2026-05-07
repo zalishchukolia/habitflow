@@ -19,7 +19,8 @@
     "@posthog/react": "^1.9.0",
     "@sentry/react": "^8.55.2",
     "lucide-react": "^0.577.0",
-    "posthog-js": "^1.372.4",
+    "playwright": "^1.59.1",
+    "posthog-js": "^1.372.9",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },
@@ -40,5 +41,18 @@
     "jsdom": "^29.0.1",
     "vite": "^8.0.0",
     "vitest": "^4.1.0"
-  }
+  },
+  "description": "[![CI/CD Pipeline](https://github.com/zalishchukolia/habitflow/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/zalishchukolia/habitflow/actions/workflows/ci-cd.yml)",
+  "main": "bot.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zalishchukolia/habitflow.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zalishchukolia/habitflow/issues"
+  },
+  "homepage": "https://github.com/zalishchukolia/habitflow#readme"
 }
