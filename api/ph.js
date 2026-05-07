@@ -2,7 +2,7 @@ export const config = { runtime: 'edge' }
 
 export default async function handler(req) {
   const url = new URL(req.url)
-  const path = url.pathname.replace('/api/ph', '').replace(/\/$/, '') || '/'
+  const path = url.pathname.replace('/api/ph', '') || '/'
 
   const isAssets = path.startsWith('/static/') || path.startsWith('/array/')
   const host = isAssets ? 'us-assets.i.posthog.com' : 'us.i.posthog.com'
