@@ -5,7 +5,6 @@ import App from './App.jsx'
 import posthog from 'posthog-js'
 import { PostHogProvider } from '@posthog/react'
 import * as Sentry from '@sentry/react'
-import { lazy, Suspense } from 'react'
 
 Sentry.init({
   dsn: 'https://360323fea97c63ef90d77648fd0371df@o4511345154523136.ingest.de.sentry.io/4511345160355920',
@@ -19,11 +18,14 @@ Sentry.init({
   environment: 'production',
 })
 
-posthog.init('phc_vsj2aobx6g5hdqhy5J9DbHiBV28G96dzQir7cn4qqBHj', {
-  api_host: '/api/ph',
-  ui_host: 'https://us.posthog.com',
-  person_profiles: 'identified_only',
-})
+setTimeout(() => {
+  posthog.init('phc_vsj2aobx6g5hdqhy5J9DbHiBV28G96dzQir7cn4qqBHj', {
+    api_host: '/api/ph',
+    ui_host: 'https://us.posthog.com',
+    person_profiles: 'identified_only',
+    disable_session_recording: true,
+  })
+}, 0)
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
