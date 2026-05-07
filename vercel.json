@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/ph/[...path].js": {
+      "runtime": "edge"
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",
