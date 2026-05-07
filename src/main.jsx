@@ -5,6 +5,7 @@ import App from './App.jsx'
 import posthog from 'posthog-js'
 import { PostHogProvider } from '@posthog/react'
 import * as Sentry from '@sentry/react'
+import { lazy, Suspense } from 'react'
 
 Sentry.init({
   dsn: 'https://360323fea97c63ef90d77648fd0371df@o4511345154523136.ingest.de.sentry.io/4511345160355920',
