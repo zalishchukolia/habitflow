@@ -5,14 +5,13 @@ export default defineConfig({
   plugins: [react()],
   build: {
     target: 'esnext',
-    minify: 'terser',
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          posthog: ['posthog-js'],
-          sentry: ['@sentry/react'],
-          lucide: ['lucide-react'],
+        manualChunks(id) {
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) return 'vendor'
+          if (id.includes('node_modules/posthog-js')) return 'posthog'
+          if (id.includes('node_modules/@sentry')) return 'sentry'
+          if (id.includes('node_modules/lucide-react')) return 'lucide'
         }
       }
     }
