@@ -18,14 +18,15 @@ Sentry.init({
   environment: 'production',
 })
 
-setTimeout(() => {
-  posthog.init('phc_vsj2aobx6g5hdqhy5J9DbHiBV28G96dzQir7cn4qqBHj', {
-    api_host: '/api/ph',
-    ui_host: 'https://us.posthog.com',
-    person_profiles: 'identified_only',
-    disable_session_recording: true,
-  })
-}, 0)
+posthog.init('phc_vsj2aobx6g5hdqhy5J9DbHiBV28G96dzQir7cn4qqBHj', {
+  api_host: '/ingest',
+  ui_host: 'https://us.posthog.com',
+  person_profiles: 'identified_only',
+  disable_session_recording: true,
+  loaded: (ph) => {
+    console.log('PostHog loaded, distinct_id:', ph.get_distinct_id())
+  }
+})
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
