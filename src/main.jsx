@@ -18,7 +18,7 @@ Sentry.init({
   environment: 'production',
 })
 
-posthog.init('phc_vsj2aobx6g5hdqhy5J9DbHiBV28G96dzQir7cn4qqBHj', {
+posthog.init('phc_mtMJmszhT4GT282nc6k2gTziJ582qPPXdSA8XHdBGowY', {
   api_host: '/api/ph',
   ui_host: 'https://us.posthog.com',
   person_profiles: 'identified_only',
