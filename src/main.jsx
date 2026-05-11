@@ -20,7 +20,7 @@ Sentry.init({
 
 posthog.init('phc_mtMJmszhT4GT282nc6k2gTziJ582qPPXdSA8XHdBGowY', {
   api_host: '/api/ph',
-  ui_host: 'https://us.posthog.com',
+  ui_host: 'https://eu.posthog.com',
   person_profiles: 'identified_only',
   loaded: (ph) => {
     console.log('PostHog loaded, distinct_id:', ph.get_distinct_id())
