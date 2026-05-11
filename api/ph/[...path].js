@@ -9,12 +9,17 @@ export default async function handler(req) {
 
   const headers = new Headers()
   headers.set('host', host)
-  headers.set('content-type', req.headers.get('content-type') || 'application/json')
+
+  const ct = req.headers.get('content-type')
+  if (ct) headers.set('content-type', ct)
+
+  const ce = req.headers.get('content-encoding')
+  if (ce) headers.set('content-encoding', ce)
 
   const xff = req.headers.get('x-forwarded-for')
   if (xff) headers.set('x-forwarded-for', xff)
 
-  const body = req.method === 'GET' || req.method === 'HEAD' ? undefined : await req.text()
+  const body = req.method === 'GET' || req.method === 'HEAD' ? undefined : req.body
 
   return fetch(target, {
     method: req.method,
