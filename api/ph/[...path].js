@@ -5,11 +5,12 @@ export default async function handler(req) {
   const path = url.pathname.replace(/^\/api\/ph/, '') || '/'
 
   const isAssets = path.startsWith('/static/') || path.startsWith('/array/')
-  const host = isAssets ? 'us-assets.i.posthog.com' : 'eu.i.posthog.com'
+  const host = isAssets ? 'eu-assets.i.posthog.com' : 'eu.i.posthog.com'
   const target = `https://${host}${path}${url.search}`
 
   const headers = new Headers()
   headers.set('host', host)
+  headers.set('content-type', 'application/json')
   headers.set('content-type', req.headers.get('content-type') || 'application/json')
 
   const xff = req.headers.get('x-forwarded-for')
