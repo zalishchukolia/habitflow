@@ -19,9 +19,9 @@ Sentry.init({
 })
 
 posthog.init('phc_mtMJmszhT4GT282nc6k2gTziJ582qPPXdSA8XHdBGowY', {
-  api_host: 'https://eu.i.posthog.com',
+  api_host: '/api/ph',        // ← через проксі, не напряму
   ui_host: 'https://eu.posthog.com',
-  
+  person_profiles: 'always', // ← щоб анонімні юзери теж відображались
 })
 
 createRoot(document.getElementById('root')).render(
