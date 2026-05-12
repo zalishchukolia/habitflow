@@ -507,11 +507,12 @@ export default function App() {
 
   // 🚩 Підписуємось на Feature Flag
   useEffect(() => {
-    if (!posthog) return;
-    posthog.onFeatureFlags(() => {
-      setShowUrgentFilter(!!posthog.isFeatureEnabled('show-urgent-filter'));
-    });
-  }, [posthog]);
+  if (!posthog) return;
+  posthog.reloadFeatureFlags();
+  posthog.onFeatureFlags(() => {
+    setShowUrgentFilter(!!posthog.isFeatureEnabled('show-urgent-filter'));
+  });
+}, [posthog]);
 
   useEffect(() => {
     Sentry.setUser({
