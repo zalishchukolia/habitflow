@@ -510,7 +510,9 @@ export default function App() {
   if (!posthog) return;
   posthog.reloadFeatureFlags();
   posthog.onFeatureFlags(() => {
-    setShowUrgentFilter(!!posthog.isFeatureEnabled('show-urgent-filter'));
+    const val = posthog.isFeatureEnabled('show-urgent-filter');
+    console.log('🚩 Feature flag value:', val);
+    setShowUrgentFilter(!!val);
   });
 }, [posthog]);
 
