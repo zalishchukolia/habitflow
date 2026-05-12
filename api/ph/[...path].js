@@ -4,7 +4,7 @@ export default async function handler(req) {
   const url = new URL(req.url)
   const path = url.pathname.replace(/^\/api\/ph/, '').replace(/\/$/, '') || '/'
 
-  const host = 'eu.i.posthog.com'
+  const host = 'us.i.posthog.com'
   const target = `https://${host}${path}${url.search}`
 
   const headers = new Headers()
@@ -18,10 +18,6 @@ export default async function handler(req) {
 
   const xff = req.headers.get('x-forwarded-for')
   if (xff) headers.set('x-forwarded-for', xff)
-
-  // ↓ додай це
-  const auth = req.headers.get('authorization')
-  if (auth) headers.set('authorization', auth)
 
   const body = req.method === 'GET' || req.method === 'HEAD' ? undefined : req.body
 
