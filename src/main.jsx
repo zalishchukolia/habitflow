@@ -18,7 +18,7 @@ Sentry.init({
   environment: 'production',
 })
 
-posthog.init('phc_mtMJmszhT4GT282nc6k2gTziJ582qPPXdSA8XHdBGowY', {
+posthog.init('phc_vsj2aobx6g5hdqhy5J9DbHiBV28G96dzQir7cn4qqBHj', {
   api_host: '/api/ph',        // ← через проксі, не напряму
   ui_host: 'https://eu.posthog.com',
   person_profiles: 'always', // ← щоб анонімні юзери теж відображались
