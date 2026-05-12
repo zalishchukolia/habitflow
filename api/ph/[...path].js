@@ -19,6 +19,10 @@ export default async function handler(req) {
   const xff = req.headers.get('x-forwarded-for')
   if (xff) headers.set('x-forwarded-for', xff)
 
+  // ↓ додай це
+  const auth = req.headers.get('authorization')
+  if (auth) headers.set('authorization', auth)
+
   const body = req.method === 'GET' || req.method === 'HEAD' ? undefined : req.body
 
   return fetch(target, {
